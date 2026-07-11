@@ -38,7 +38,8 @@ export default function StudentMarksView() {
         examTypes.map((examType) => (
           <div className="card" key={examType} style={{ marginBottom: 20 }}>
             <h3 className="card-title" style={{ textAlign: 'center' }}>{examType}</h3>
-            <table className="data-table">
+            <div className="table-scroll">
+<table className="data-table">
               <thead><tr><th>Subject</th><th>Marks</th></tr></thead>
               <tbody>
                 {groupedMarks[examType].map((m) => (
@@ -49,6 +50,7 @@ export default function StudentMarksView() {
                 ))}
               </tbody>
             </table>
+</div>
             {examTypeSummaries[examType] && (
               <p style={{ fontWeight: 600, marginTop: 12, textAlign: 'center' }}>
                 Total: {examTypeSummaries[examType].obtained} / {examTypeSummaries[examType].possible} ({examTypeSummaries[examType].percentage}%)

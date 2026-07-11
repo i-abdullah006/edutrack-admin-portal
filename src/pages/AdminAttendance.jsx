@@ -219,7 +219,8 @@ export default function AdminAttendance() {
           {students.length === 0 ? (
             <p className="text-muted">Add students from the "Students" tab first.</p>
           ) : (
-            <table className="data-table">
+            <div className="table-scroll">
+<table className="data-table">
               <thead><tr><th>Name</th><th>Roll No</th><th>Current Status</th><th>Mark</th></tr></thead>
               <tbody>
                 {students.map((s) => {
@@ -247,6 +248,7 @@ export default function AdminAttendance() {
                 })}
               </tbody>
             </table>
+</div>
           )}
         </div>
       )}

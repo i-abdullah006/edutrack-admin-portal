@@ -160,7 +160,8 @@ export default function AdminMarks() {
                 Enter marks for one subject, save, then move to the next whenever you're ready. Subjects with marks already saved are marked complete.
               </p>
 
-              <table className="data-table">
+              <div className="table-scroll">
+<table className="data-table">
                 <thead>
                   <tr>
                     <th>Subject</th>
@@ -193,6 +194,7 @@ export default function AdminMarks() {
                   ))}
                 </tbody>
               </table>
+</div>
             </div>
           )}
 
@@ -202,7 +204,8 @@ export default function AdminMarks() {
               {Object.entries(groupedMarks).map(([exam, entries]) => (
                 <div key={exam} style={{ marginBottom: 20 }}>
                   <h4 style={{ fontSize: '0.9rem', marginBottom: 8, textAlign: 'center' }}>{exam}</h4>
-                  <table className="data-table">
+                  <div className="table-scroll">
+<table className="data-table">
                     <thead>
                       <tr><th>Subject</th><th>Marks</th></tr>
                     </thead>
@@ -215,6 +218,7 @@ export default function AdminMarks() {
                       ))}
                     </tbody>
                   </table>
+</div>
                   {examTypeSummaries[exam] && (
                     <p style={{ fontWeight: 600, marginTop: 8, fontSize: '0.9rem' }}>
                       {exam} Total: {examTypeSummaries[exam].obtained} / {examTypeSummaries[exam].possible} ({examTypeSummaries[exam].percentage}%)

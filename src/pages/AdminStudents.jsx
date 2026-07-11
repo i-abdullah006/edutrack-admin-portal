@@ -112,6 +112,7 @@ export default function AdminStudents() {
         {students.length === 0 ? (
           <p className="text-muted">No students added yet.</p>
         ) : (
+          <div className="table-scroll">
           <table className="data-table">
             <thead>
               <tr>
@@ -171,6 +172,7 @@ export default function AdminStudents() {
               ))}
             </tbody>
           </table>
+          </div>
         )}
       </div>
 

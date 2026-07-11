@@ -78,7 +78,8 @@ export default function AdminStudentPreview() {
         {!attendance || attendance.records.length === 0 ? (
           <p className="text-muted">No attendance records yet.</p>
         ) : (
-          <table className="data-table">
+          <div className="table-scroll">
+<table className="data-table">
             <thead><tr><th>Date</th><th>Time</th><th>Status</th><th>Method</th></tr></thead>
             <tbody>
               {attendance.records.map((r) => (
@@ -91,6 +92,7 @@ export default function AdminStudentPreview() {
               ))}
             </tbody>
           </table>
+</div>
         )}
       </div>
 
@@ -102,7 +104,8 @@ export default function AdminStudentPreview() {
           Object.entries(marksData.groupedMarks).map(([exam, entries]) => (
             <div key={exam} style={{ marginBottom: 20 }}>
               <h4 style={{ fontSize: '0.9rem', marginBottom: 8, textAlign: 'center' }}>{exam}</h4>
-              <table className="data-table">
+              <div className="table-scroll">
+<table className="data-table">
                 <thead><tr><th>Subject</th><th>Marks</th></tr></thead>
                 <tbody>
                   {entries.map((m) => (
@@ -110,6 +113,7 @@ export default function AdminStudentPreview() {
                   ))}
                 </tbody>
               </table>
+</div>
               {marksData.examTypeSummaries[exam] && (
                 <p style={{ fontWeight: 600, marginTop: 8, fontSize: '0.9rem' }}>
                   {exam} Total: {marksData.examTypeSummaries[exam].obtained} / {marksData.examTypeSummaries[exam].possible} ({marksData.examTypeSummaries[exam].percentage}%)

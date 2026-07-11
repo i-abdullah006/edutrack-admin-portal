@@ -150,7 +150,7 @@ export default function AddStudentForm({ onStudentAdded }) {
         </div>
       ) : (
         <form onSubmit={handleSubmit}>
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
+          <div className="form-grid-2">
             <div className="form-group">
               <label className="form-label">Name</label>
               <input className="form-input" value={name} onChange={(e) => setName(e.target.value)} required />
@@ -166,7 +166,7 @@ export default function AddStudentForm({ onStudentAdded }) {
             <input className="form-input" type="tel" value={contactNumber} onChange={(e) => setContactNumber(e.target.value)} required />
           </div>
 
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 12 }}>
+          <div className="form-grid-3">
             <div className="form-group">
               <label className="form-label">Class</label>
               <select className="form-select" value={classNumber} onChange={(e) => setClassNumber(e.target.value)} required>

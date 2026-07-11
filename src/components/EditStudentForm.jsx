@@ -3,6 +3,7 @@ import { useAuth } from '../context/AuthContext';
 import apiRequest from '../api/apiHelper';
 import CameraCapture, { captureFrameFromVideo } from './CameraCapture';
 import { resolvePhotoUrl } from '../api/config';
+import { startRegistration } from '@simplewebauthn/browser';
 
 export default function EditStudentForm({ student, onSaved, onCancel }) {
   const { user } = useAuth();
@@ -14,9 +15,30 @@ export default function EditStudentForm({ student, onSaved, onCancel }) {
   const [photoDataUrl, setPhotoDataUrl] = useState(null);
   const videoRef = useRef(null);
 
+  const [fingerprintStatus, setFingerprintStatus] = useState('idle'); // idle | enrolling | done | failed
+  const [fingerprintError, setFingerprintError] = useState('');
+
   const [error, setError] = useState('');
   const [success, setSuccess] = useState(null);
   const [loading, setLoading] = useState(false);
+
+  async function enrollFingerprint() {
+    setFingerprintStatus('enrolling');
+    setFingerprintError('');
+    try {
+      const options = await apiRequest(`/fingerprint/${student._id}/register-options`, { token: user.token });
+      const registrationResponse = await startRegistration(options);
+      await apiRequest(`/fingerprint/${student._id}/register-verify`, {
+        method: 'POST',
+        token: user.token,
+        body: registrationResponse
+      });
+      setFingerprintStatus('done');
+    } catch (err) {
+      setFingerprintStatus('failed');
+      setFingerprintError(err.message || 'Enrollment failed or was cancelled.');
+    }
+  }
 
   function handleVideoReady(videoElement) {
     videoRef.current = videoElement;
@@ -78,7 +100,7 @@ export default function EditStudentForm({ student, onSaved, onCancel }) {
         </div>
       ) : (
         <form onSubmit={handleSubmit}>
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
+          <div className="form-grid-2">
             <div className="form-group">
               <label className="form-label">Name</label>
               <input className="form-input" value={name} onChange={(e) => setName(e.target.value)} required />
@@ -122,6 +144,27 @@ export default function EditStudentForm({ student, onSaved, onCancel }) {
                   <button type="button" className="btn btn-secondary" onClick={() => { setPhotoDataUrl(null); setCameraActive(true); }}>Retake</button>
                 </div>
               </div>
+            )}
+          </div>
+
+          <div className="form-group">
+            <label className="form-label">Fingerprint</label>
+            <p className="text-muted" style={{ fontSize: '0.82rem', marginBottom: 8 }}>
+              {student.hasFingerprintEnrolled
+                ? 'A fingerprint is already enrolled for this student. Enrolling again will replace it.'
+                : 'No fingerprint enrolled yet. This requires a fingerprint sensor on this device.'}
+            </p>
+            {fingerprintStatus !== 'enrolling' && (
+              <button type="button" className="btn btn-secondary" onClick={enrollFingerprint}>
+                {student.hasFingerprintEnrolled ? 'Re-enroll Fingerprint' : 'Enroll Fingerprint'}
+              </button>
+            )}
+            {fingerprintStatus === 'enrolling' && <p className="text-muted" style={{ fontSize: '0.85rem' }}>Touch the fingerprint sensor now...</p>}
+            {fingerprintStatus === 'done' && <p style={{ fontSize: '0.85rem', color: 'var(--color-accent)', marginTop: 6 }}>Fingerprint enrolled successfully.</p>}
+            {fingerprintStatus === 'failed' && (
+              <p style={{ fontSize: '0.85rem', color: 'var(--color-danger)', marginTop: 6 }}>
+                {fingerprintError || 'Enrollment failed or was cancelled.'} Make sure this device has a fingerprint sensor and try again.
+              </p>
             )}
           </div>
 

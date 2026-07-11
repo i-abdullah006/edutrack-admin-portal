@@ -56,7 +56,8 @@ export default function StudentAttendanceHistory() {
         {records.length === 0 ? (
           <p className="text-muted">No attendance records yet.</p>
         ) : (
-          <table className="data-table">
+          <div className="table-scroll">
+<table className="data-table">
             <thead>
               <tr>
                 <th>Date</th>
@@ -76,6 +77,7 @@ export default function StudentAttendanceHistory() {
               ))}
             </tbody>
           </table>
+</div>
         )}
       </div>
     </div>
