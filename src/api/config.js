@@ -3,7 +3,7 @@
 // Until then, this points to your local backend for testing
 // =========================================================
 
-export const API_BASE_URL = 'http://localhost:5000/api';
+export const API_BASE_URL = 'https://edutrack-backend-4xp0.onrender.com/api';
 
 // After deployment, change it like this:
 // export const API_BASE_URL = 'https://your-app-name.onrender.com/api';
