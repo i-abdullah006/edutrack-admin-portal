@@ -71,9 +71,10 @@ export default function AdminMarks() {
     setActiveSubject(null);
   }
 
-  function handleExamTypeBlur() {
-    if (examType) {
-      loadSubjectStatus(selectedStudentId, examType);
+  function handleShowSubjects(e) {
+    e.preventDefault();
+    if (examType.trim()) {
+      loadSubjectStatus(selectedStudentId, examType.trim());
     }
   }
 
@@ -143,14 +144,24 @@ export default function AdminMarks() {
         <>
           <div className="card" style={{ marginBottom: 24 }}>
             <h3 className="card-title">Exam Type</h3>
-            <input
-              className="form-input"
-              placeholder="e.g. Class Test, Mid Term, Final"
-              value={examType}
-              onChange={(e) => handleExamTypeChange(e.target.value)}
-              onBlur={handleExamTypeBlur}
-              style={{ maxWidth: 300 }}
-            />
+            <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap', alignItems: 'center' }}>
+              <input
+                className="form-input"
+                placeholder="e.g. Class Test, Mid Term, Final"
+                value={examType}
+                onChange={(e) => handleExamTypeChange(e.target.value)}
+                onKeyDown={(e) => { if (e.key === 'Enter') { e.preventDefault(); handleShowSubjects(e); } }}
+                style={{ maxWidth: 300, flex: 1 }}
+              />
+              <button
+                type="button"
+                className="btn btn-primary"
+                onClick={handleShowSubjects}
+                disabled={!examType.trim()}
+              >
+                Continue
+              </button>
+            </div>
           </div>
 
           {examType && subjectStatus.length > 0 && (
